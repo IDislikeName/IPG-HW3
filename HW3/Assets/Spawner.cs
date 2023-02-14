@@ -37,7 +37,7 @@ public class Spawner : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         Sp();
-        if(GameManager.instance.lost)
+        if(!GameManager.instance.lost)
             StartCoroutine(Spawn());
     }
 }
