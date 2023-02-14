@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (GameManager.instance.lost)
+        if (!GameManager.instance.lost)
             rb.velocity = move * moveSpeed;
     }
 }
