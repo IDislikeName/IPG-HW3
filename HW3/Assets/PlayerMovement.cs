@@ -7,10 +7,9 @@ public class PlayerMovement : MonoBehaviour
     Vector3 move;
     Rigidbody rb;
     public float moveSpeed;
-    public float fireCD = 1f;
-    float currentCD = 0f;
-    public GameObject bullet;
-    public Transform bulletSpawn;
+    public GameObject pistol;
+    public GameObject rifle;
+    bool unlocked;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,22 +28,19 @@ public class PlayerMovement : MonoBehaviour
 
         transform.GetChild(0).rotation = Quaternion.Euler(0, angle, 0);
 
-        if (Input.GetMouseButtonDown(0)&&currentCD<=0)
-        {
-            currentCD = fireCD;
-            Fire();
-        }
-        currentCD -= Time.deltaTime;
-        currentCD = Mathf.Max(0, currentCD);
+        
+        
         Camera.main.transform.position = transform.position + new Vector3(0, 15f, 0);
-    }
-    public void Fire()
-    {
-        GameObject b= Instantiate(bullet);
-        b.transform.rotation = transform.GetChild(0).rotation;
-        b.transform.position = bulletSpawn.position;
 
+        if (GameManager.instance.score >= 10 && !unlocked)
+        {
+            unlocked = true;
+            pistol.SetActive(false);
+            rifle.SetActive(true);
+
+        }
     }
+    
     private void FixedUpdate()
     {
         if (!GameManager.instance.lost)

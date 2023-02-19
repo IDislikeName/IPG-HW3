@@ -17,14 +17,14 @@ public class Bullet : MonoBehaviour
     }
     IEnumerator Die()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
         Destroy(gameObject);
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            other.GetComponent<EnemyBehavior>().Die();
+            other.GetComponent<EnemyBehavior>().TakeDamage(1);
             Destroy(gameObject);
         }
         if (other.CompareTag("Walls"))

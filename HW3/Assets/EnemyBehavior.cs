@@ -5,6 +5,17 @@ using UnityEngine.AI;
 
 namespace Enemy
 {
+    [System.Serializable]
+    struct EnemyStats
+    {
+        public int maxHp;
+        public float speed;
+        public EnemyStats(int maxHp,float speed)
+        {
+            this.maxHp = maxHp;
+            this.speed = speed;
+        }
+    }
     public class EnemyBehavior : MonoBehaviour
     {
         NavMeshAgent ag;
@@ -12,6 +23,9 @@ namespace Enemy
         Animator anim;
         public bool dead = false;
         bool pathing = false;
+        [SerializeField]
+        EnemyStats stats;
+        int currentHp;
         // Start is called before the first frame update
         void Start()
         {
@@ -19,6 +33,8 @@ namespace Enemy
             anim = GetComponent<Animator>();
             StartCoroutine(StartPathing());
             player = GameObject.Find("Player").transform;
+            currentHp = stats.maxHp;
+            ag.speed = stats.speed;
         }
 
         // Update is called once per frame
@@ -26,6 +42,10 @@ namespace Enemy
         {
             if(!dead&&pathing)
                 ag.SetDestination(player.position);
+            if (!dead && currentHp <= 0)
+            {
+                Die();
+            }
         }
         IEnumerator StartPathing()
         {
@@ -42,6 +62,10 @@ namespace Enemy
         public void D()
         {
             Destroy(gameObject);
+        }
+        public void TakeDamage(int damage)
+        {
+            currentHp -= damage;
         }
         private void OnCollisionEnter(Collision collision)
         {
